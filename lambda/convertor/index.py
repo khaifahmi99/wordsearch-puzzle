@@ -37,7 +37,9 @@ def handler(event, context):
     markdown_content = f.read()
     markdown_content = markdown_content.replace('\n', '\n\n')
     output = markdown.markdown(markdown_content)
+    output = output.replace('<h2>', '<h2 style="font-family: Courier">')
     output = output.replace('<p>', '<p style="font-family: Courier">')
+    output = output.replace('<li>', '<li style="font-family: Courier">')
 
   with open(OUTPUT_PATH, 'w') as f:
     f.write(output)

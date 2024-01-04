@@ -60,6 +60,11 @@ def handler(event, context):
           l += letter
           l += ' '
       print(l)
+
+  print('')
+  print('## Words')
+  for word in words:
+    print(f'* {word.upper()}')
   # Restore the original stdout
   sys.stdout = sys.__stdout__
 
