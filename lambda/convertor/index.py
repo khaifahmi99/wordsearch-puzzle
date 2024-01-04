@@ -37,12 +37,26 @@ def handler(event, context):
     markdown_content = f.read()
     markdown_content = markdown_content.replace('\n', '\n\n')
     output = markdown.markdown(markdown_content)
-    output = output.replace('<h2>', '<h2 style="font-family: Courier">')
-    output = output.replace('<p>', '<p style="font-family: Courier">')
-    output = output.replace('<li>', '<li style="font-family: Courier">')
+
+    # add style that gives some margin y
+    html = """
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Courier;
+            margin-left: 40px;
+            margin-right: 40px;
+          }
+        </style>
+      </head>
+      <body>
+    """
+    html += output
+    html += '</body></html>'
 
   with open(OUTPUT_PATH, 'w') as f:
-    f.write(output)
+    f.write(html)
 
   print("Uploading html to S3")
   if BUCKET_OUTPUT_DIR.endswith('/'):

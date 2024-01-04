@@ -5,6 +5,7 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { Bucket, EventType } from 'aws-cdk-lib/aws-s3';
 import { Runtime, Code, Function } from 'aws-cdk-lib/aws-lambda';
 import { S3EventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import { AnyPrincipal, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class WordsearchPuzzleStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -13,6 +14,15 @@ export class WordsearchPuzzleStack extends Stack {
     const bucket = new Bucket(this, 'WordsearchPuzzleBucket', {
       bucketName: 'wordsearch-puzzle-01234'  
     });
+
+    bucket.grantPublicAccess();
+    bucket.addToResourcePolicy(
+      new PolicyStatement({
+        principals: [new AnyPrincipal()],
+        actions: ['s3:GetObject'],
+        resources: [bucket.arnForObjects('puzzle/*')],
+      })
+    )
 
     // Trigger: S3 Upload, matching the words/<filename>.json
     // Lambda: Generate puzzle, upload to generated/<filename>.md
