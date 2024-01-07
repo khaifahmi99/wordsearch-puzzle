@@ -11,9 +11,7 @@ export class WordsearchPuzzleStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const bucket = new Bucket(this, 'WordsearchPuzzleBucket', {
-      bucketName: 'wordsearch-puzzle-01234'  
-    });
+    const bucket = new Bucket(this, 'WordsearchPuzzleBucket');
 
     bucket.grantPublicAccess();
     bucket.addToResourcePolicy(
