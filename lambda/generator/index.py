@@ -8,8 +8,6 @@ import urllib
 s3 = boto3.client('s3')
 
 def handler(event, context):
-  DIMENSION = 20
-
   # read in environment variables
   BUCKET_OUTPUT_DIR = os.environ['OUTPUT_DIR']
 
@@ -49,7 +47,7 @@ def handler(event, context):
 
   print(f'Generating Puzzle...({len(words)} words)')
   print(words)
-  w = WordSearch(words, DIMENSION, 15)
+  w = WordSearch(words, 25, 15)
 
   # Redirect print output to OUTPUT_PATH
   sys.stdout = open(OUTPUT_PATH, 'a')
