@@ -1,3 +1,12 @@
+'''
+File: WordSearch.py
+Github URL: https://github.com/mast3rsoft/WordSearch
+
+This file was referenced from other people's work and has been further modified 
+to work for this project. The URL above is the repository where the original code 
+can be found.
+'''
+
 import random
 class WordSearch():
     HORIZONTAL = 0
