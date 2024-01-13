@@ -31,6 +31,7 @@ def handler(event, context):
   print(f'Pulling list of words from S3 - {filename_with_ext}')
   s3.download_file(BUCKET_NAME, s3_key, INPUT_PATH)
 
+  title = "Puzzle"
   words = []
 
   # read the words from the file content (json)
@@ -38,9 +39,12 @@ def handler(event, context):
     with open(INPUT_PATH, 'r') as f:
       content = json.load(f)
       keys = content.keys()
+      if 'title' in keys:
+        title = content['title']
       for key in keys:
         if key != 'title':
           words.append(content[key].upper())
+
   except Exception as e:
     print(f'Error reading file content - {e}')
     raise e
@@ -51,7 +55,7 @@ def handler(event, context):
 
   # Redirect print output to OUTPUT_PATH
   sys.stdout = open(OUTPUT_PATH, 'a')
-  print("## Puzzle")
+  print(f'## {title}')
   for line in w.grid:
       l = ''
       for letter in line:
