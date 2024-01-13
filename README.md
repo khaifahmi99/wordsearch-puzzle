@@ -7,7 +7,7 @@ The idea is to leverage LLMs and serverless architecture to handle the generatio
 ![Architecture](./docs/image/arch.png)
 
 ## Features
-- [ ] Word Search words generation using ollama
+- [X] Word Search words generation using ollama
 - [ ] Word Search words generation using llm
 - [X] Puzzle generation
 - [X] Puzzle for end users (HTML)
@@ -16,34 +16,39 @@ The idea is to leverage LLMs and serverless architecture to handle the generatio
 - [ ] Words Validation
 - [ ] Safe Words
 
-## Getting Started
+## Deploying the stack
 1. Ensure you have AWS CLI, AWS CDK and Docker installed
 2. Run `cdk deploy` to deploy the stack
 3. Done!
 
+## Word Generation
+Prerequisite: You will to the endpoint to your ollama server. Read more on ollama [here](https://ollama.ai)
+```bash
+  $ python3 scripts/ollama-word-generate.py "cartoon characters" "llama2:13b" "http://localhost:11434" > /tmp/test.json
+  $ cat /tmp/test.json
+    {
+      "title": "Solar System",
+      "0": "earth",
+      "1": "mars",
+      "2": "jupiter",
+      "3": "saturn",
+      "4": "uranus",
+      "5": "neptune",
+      "6": "sun",
+      "7": "mercury",
+      "8": "moon",
+      "9": "pluto"
+    }
+```
+
+
+## Puzzle Generation
 Note: You can test the application by uploading a list of words to the deployed S3 (/words) and see 
 the generated puzzle in your S3 (/puzzle)
 
 ```bash
-$ cat /tmp/test.json
-{
-  "title": "Solar System",
-  "0": "earth",
-  "1": "mars",
-  "2": "jupiter",
-  "3": "saturn",
-  "4": "uranus",
-  "5": "neptune",
-  "6": "sun",
-  "7": "mercury",
-  "8": "moon",
-  "9": "pluto"
-}
-
 $ aws s3 cp /tmp/test.json s3://<bucket-arn>/words/test.json
 ```
-
-
 
 ## Useful commands
 
