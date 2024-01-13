@@ -13,15 +13,6 @@ export class WordsearchPuzzleStack extends Stack {
 
     const bucket = new Bucket(this, 'WordsearchPuzzleBucket');
 
-    bucket.grantPublicAccess();
-    bucket.addToResourcePolicy(
-      new PolicyStatement({
-        principals: [new AnyPrincipal()],
-        actions: ['s3:GetObject'],
-        resources: [bucket.arnForObjects('puzzle/*')],
-      })
-    )
-
     // Trigger: S3 Upload, matching the words/<filename>.json
     // Lambda: Generate puzzle, upload to generated/<filename>.md
     const generatorLambda = new Function(this, 'GeneratorFunction', {
