@@ -8,7 +8,7 @@ The idea is to leverage LLMs and serverless architecture to handle the generatio
 
 ## Features
 - [X] Word Search words generation using ollama
-- [ ] Word Search words generation using llm
+- [X] Word Search words generation using openai
 - [X] Puzzle generation
 - [X] Puzzle for end users (HTML)
 - [ ] Puzzle for end users (PDF)

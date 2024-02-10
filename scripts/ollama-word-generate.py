@@ -15,10 +15,9 @@ $ python3 ollama-word-generate.py colours
 $ python3 ollama-word-generate.py "board game" "llama2:13b" "http://myserver.com:11434" --debug
 '''
 
-import requests
 import json
 import sys
-
+from openai import OpenAI
 
 params = sys.argv
 if len(params) >= 2:
@@ -64,22 +63,32 @@ rules = """
 prompt = f"Generate exactly 10 words for kids' word search puzzle based on the topic '{topic}'. \nUse the following template: {json.dumps(template)}.\nIt should follow such rules: {rules}.\nFill in the title with the topic and the words array have 10 items. The generated word should not be too long, maximise it to 10 and the word should not have spaces. Only output the JSON object and nothing else. This is so that the output can easily be ingested into jq or represented as the content for a JSON file"
 
 if debug:
-  print(prompt)
+  print('model:', model)
+  print('endpoint: ', endpoint)
+  print('topic:', topic)
+  print('prompt:', prompt)
 
-data = {
-    "prompt": prompt,
-    "model": model,
-    "format": "json",
-    "stream": False,
-    "options": {"temperature": 2.5, "top_p": 0.99, "top_k": 100},
-}
+client = OpenAI(
+    base_url=f'{endpoint}/v1/',
+    api_key='ollama',
+)
 
-response = requests.post(f'{endpoint}/api/generate', json=data, stream=False)
-json_data = json.loads(response.text)
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "system",
+            "content": "You will be provided an instruction, you will need to complete the instruction and return your response in json format."
+        },
+        {
+            'role': 'user',
+            'content': prompt,
+        }
+    ],
+    model=model,
+    stream=False,
+)
 
-if debug:
-  print(json_data)
-  print("")
+content = chat_completion.choices[0].message.content
 
-print(json.dumps(json.loads(json_data["response"]), indent=2))
+print(json.dumps(json.loads(content), indent=2))
 
